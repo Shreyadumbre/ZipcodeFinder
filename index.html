@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <title>Zipcode Finder</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+      <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+      
+      <style>
+      
+          .container{
+              
+              text-align: center;
+          }
+          h1{
+              
+              font-family: 'Staatliches', cursive;
+              margin-top: 50px;
+              font-size: 50px;
+          }
+          p{
+               
+              font-size: 28px;
+              font-family: 'Poiret One', cursive;
+              font-weight: bold;
+          }
+          img{
+              
+              width: 500px;
+              height: 35    0px;
+              background: none;
+          }
+          #message{
+              
+              margin: 20px;
+          }
+      </style>
+  </head>
+  <body>
+      
+      <div class="container">
+    <h1>Zipcode Finder</h1>
+         
+        <p>Fill in the details you know and we'll do the rest</p>
+          
+      <form>
+  <fieldset class="form-group">
+   
+    <input type="text" class="form-control" id="address" placeholder="Enter partial address">
+  </fieldset>
+  
+  <button class="btn btn-primary" id="findpostcode">Submit</button>
+         <div id="message"></div>
+</form>
+           <img src="add.jpg" alt="finderimg">
+      </div>
+
+    <!-- jQuery first, then Bootstrap JS. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+      
+      <script type="text/javascript">
+          
+          $("#findpostcode").click(function(e){  
+            
+          
+          e.preventDefault();
+       $.ajax({
+            
+            url: "https://maps.googleapis.com/maps/api/geocode/json?address="+ encodeURIComponent($("#address").val()) +",+CA&key=AIzaSyB43UKsTHL2Kp2HHQ_rKszGTzUcQaM46p0",
+            type: "GET",
+            success: function(data){
+                
+                if(data["status"] != "OK"){
+                    
+                   $("#message").html( '<div class="alert alert-danger" role="alert">Cannot find the postcode. Please try again</div>');
+                }
+                else(
+                
+                $.each(data["results"][0]["address_components"], function(key, value){
+                    
+                    
+                    if(value["types"][0]== "postal_code"){
+                        
+                         $("#message").html('<div class="alert alert-success" role="alert"><strong>Postcode found!</strong> The postcode is ' + value["long_name"] + '.</div>');
+                    }
+                    
+                    
+                })
+                
+                )
+            }
+            
+            
+        })
+              })
+      
+      </script>
+      
+  </body>
+</html>
